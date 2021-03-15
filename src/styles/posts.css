@@ -1,0 +1,133 @@
+.posts-container{
+    background-color: #4EA9BE;
+    /* height: 100vh; */
+}
+
+
+.posts-wrapper{
+    margin: auto;
+    width: 70%;
+   
+}
+
+.make-post{
+    margin: auto;
+    /* width: 30%; */
+    margin-bottom: 2em;
+    text-align: center;
+}
+
+.make-post p{
+    color: white;
+}
+
+.make-post .icon{
+    font-size: 3em;
+    cursor: pointer;
+}
+
+.flexed-post-container{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2em;
+    padding: 2em;
+    background-color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+.name-time{
+    display: flex;
+    margin-bottom: 1em;
+    /* width: 50%; */
+}
+
+.name-time p:nth-child(2){
+    color: #959595;
+    font-size: 0.8em;
+    margin-left: 1em;
+}
+
+.del-edit{
+    display: flex;
+}
+
+.del-edit p{
+    cursor: pointer;
+    margin-left: 1rem;
+    color: #959595;
+}
+
+.img-placeholder{
+    width: 20%;
+}
+
+.img-placeholder img{
+    width: 5em;
+}
+
+.user-post{
+    width: 80%;
+}
+
+.post p:first-child{
+    font-size: 1.05em;
+    font-weight: 600;
+    margin-bottom: 0.7em;
+}
+
+.gif{
+    margin-top: 1rem;
+}
+
+.gif img{
+    width: 20em;
+}
+
+.flexed-name-div{
+    display: flex;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+.post-comment{
+    margin-top: 1em;
+    font-size: 1.3em;
+}
+
+.post-comment p{
+    cursor: pointer;
+    color: #959595;
+
+}
+
+p + p{
+    margin: 0;
+}
+
+@media only screen and (max-width: 700px){
+    .posts-wrapper{
+        margin: auto;
+        width: 90%;
+        padding: 1em;
+    }
+
+    .gif img{
+        width: 15em;
+    }
+
+    .img-placeholder img{
+        width: 4em;
+    }
+
+    .name-time{
+        flex-direction: column;
+        /* width: 50%; */
+    }
+
+    .name-time p:nth-child(2){
+        color: #959595;
+        font-size: 0.8em;
+        margin-left: 0;
+    }
+}

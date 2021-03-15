@@ -50,6 +50,13 @@ body{
   border-radius: 12px 12px 0px 12px;
 }
 
+
+.primary-btn:hover{
+  background-color: #4C506D;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
 @media only screen and (max-width: 700px) {
   body{
     font-size: 80%;

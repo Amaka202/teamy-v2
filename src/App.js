@@ -1,11 +1,17 @@
-import logo from './logo.svg';
+import 'rsuite/dist/styles/rsuite-default.css';
 import './App.css';
-import Entries from './components/Entries';
+import './App.css';
+import { Route, Switch } from "react-router-dom";
+
+import Home from './components/Home';
 
 function App() {
   return (
     <div className="App">
-      <Entries />
+      <Switch>
+          <Route path='/' exact component={Home} />
+          
+      </Switch>   
     </div>
   );
 }

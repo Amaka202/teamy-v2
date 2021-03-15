@@ -1,0 +1,28 @@
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    align-content: space-between;
+    padding: 1.5em  3em;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25)
+}
+
+.logo-div img{
+    width: 10em;
+}
+
+.homeheader-nav button{
+    margin-left: 3em;
+}
+
+@media only screen and (max-width: 700px){
+    .header-container{
+        display: flex;
+        justify-content: space-between;
+        align-content: space-between;
+        padding: 1.5em  1.2em;
+    }
+
+    .homeheader-nav button{
+        margin-left: 1.5em;
+    }
+}

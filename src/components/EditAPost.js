@@ -7,7 +7,6 @@ function EditAPost(props) {
     const { register, handleSubmit, errors } = useForm();
 
     const {show, handleClose} = props;
-    console.log('here too');
     const onSubmit = data => {
         console.log(data);
     };

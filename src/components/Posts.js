@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faEdit, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
-import HomeHeader from './headers/HomeHeader';
+import SignedInHeader from './headers/SignedInHeader';
 import '../styles/posts.css';
-import gif from '../img/gif.gif'
-import placeholder from '../img/placeholder.png'
+import gif from '../img/gif.gif';
+import placeholder from '../img/placeholder.png';
 import MakeAPost from './MakeAPost';
 import EditAPost from './EditAPost';
+import Comments from './Comments';
 
 function Posts() {
     const commentIcon = <FontAwesomeIcon icon={faComment} />
@@ -14,26 +15,34 @@ function Posts() {
     const deleteIcon = <FontAwesomeIcon icon={faTrash} />
     const WriteIcon = <FontAwesomeIcon icon={faPenSquare} />
 
-    const [show, setShow] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [openCommentsDrawer, setOpenCommentsDrawer] = useState(false);
 
-    const showModal = () => {
-        console.log('here');
-        setShow(true)
+    const handleShowModal = () => {
+        setShowModal(true)
     }
 
-    const hideModal = () => {
-        setShow(false)
+    const handleHideModal = () => {
+        setShowModal(false)
+    }
+
+    const handleOpenDrawer = () => {
+        setOpenCommentsDrawer(true)
+    }
+
+    const handleCloseDrawer = () => {
+        setOpenCommentsDrawer(false)
     }
 
     return (
         <div>
             <header>
-                <HomeHeader />
+                <SignedInHeader />
             </header>
             <section className="posts-container">
               <div className="posts-wrapper">
                 <div className="make-post">
-                    <p className="icon" onClick={showModal}>
+                    <p className="icon" onClick={handleShowModal}>
                         {WriteIcon}
                     </p>
                     <p>Make a post</p>    
@@ -67,8 +76,8 @@ function Posts() {
                                     <img src={gif} alt="gif" />
                                 </div>
                                 <div className="post-comment">
-                                    <p>
-                                    {commentIcon}
+                                    <p onClick={handleOpenDrawer}>
+                                        {commentIcon}
                                     </p>
                                 </div>
                             </div>
@@ -108,9 +117,9 @@ function Posts() {
                 </div>
                </div>
             </section>
-            <MakeAPost show={show} handleClose={hideModal}/>
-            <EditAPost show={show} handleClose={hideModal}/>
-
+            <MakeAPost show={showModal} handleClose={handleHideModal}/>
+            <EditAPost show={showModal} handleClose={handleHideModal}/>
+            <Comments open={openCommentsDrawer} handleClose={handleCloseDrawer}/>
         </div>
     )
 }

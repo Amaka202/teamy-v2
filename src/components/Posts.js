@@ -1,23 +1,36 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import dayjs from 'dayjs';
+import { Link } from "react-router-dom";
+import { Loader } from 'rsuite';
+import { Popconfirm } from 'antd';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faEdit, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import SignedInHeader from './headers/SignedInHeader';
+import {connect} from 'react-redux';
 import '../styles/posts.css';
 import gif from '../img/gif.gif';
 import placeholder from '../img/placeholder.png';
 import MakeAPost from './MakeAPost';
 import EditAPost from './EditAPost';
 import Comments from './Comments';
+import {getPosts, deletePost} from '../store/actions/postsActions';
+import useQuerry from './helpers/useQuerry';
+import { getUser } from '../store/actions/userActions';
 
-function Posts() {
+var relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime)
+
+function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost}) {
     const commentIcon = <FontAwesomeIcon icon={faComment} />
     const editIcon = <FontAwesomeIcon icon={faEdit} />
     const deleteIcon = <FontAwesomeIcon icon={faTrash} />
     const WriteIcon = <FontAwesomeIcon icon={faPenSquare} />
 
+    let query = useQuerry();
+    const [loading, setLoading] = useState(true)
     const [showPostModal, setShowPostModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [openCommentsDrawer, setOpenCommentsDrawer] = useState(false);
+
 
     const handleShowPostModal = () => {
         setShowPostModal(true)
@@ -27,21 +40,24 @@ function Posts() {
         setShowPostModal(false)
     }
 
-    const handleShowEditModal = () => {
-        setShowEditModal(true)
+    const handlePostDelete = (postId) => {
+        deletePost(postId)
     }
 
-    const handleHideEditModal = () => {
-        setShowEditModal(false)
+    const handlecancel = () => { 
+        return;
     }
 
-    const handleOpenDrawer = () => {
-        setOpenCommentsDrawer(true)
-    }
+    useEffect(() => {
+        getPosts()
+        getUser()
+    }, [posts.createPostSuccessTime, posts.editPostSuccessTime, posts.deletePostSuccessTime])
 
-    const handleCloseDrawer = () => {
-        setOpenCommentsDrawer(false)
-    }
+    useEffect(() => {
+        if(getPostsSuccessTime){
+            setLoading(false)
+        }
+    }, [getPostsSuccessTime])
 
     return (
         <div>
@@ -56,91 +72,106 @@ function Posts() {
                     </p>
                     <p>Make a post</p>    
                 </div>
-               <div className="post-owners-div">
-                    <div className="flexed-post-container">
+                {posts.postsData && posts.postsData.length > 0 
+                ?
+                    posts.postsData.map((val) => {
+                        return (
+                            <div key={val.id}>
+                                <div className="post-owners-div">
+                        <div className="flexed-post-container">
                         <div className="img-placeholder">
                             <img src={placeholder} alt="display pic"/>
                         </div>
                         <div className="flexed-name-div">
                             <div className="name-time">
-                                <h6>Umeh Chiamaka</h6>
-                                <p>1 hour ago</p>
-                            </div>
-                            <div className="del-edit">
-                                <p onClick={handleShowEditModal}>
-                                    {editIcon}
-                                </p>
+                                <h6>{val.firstname + " " + val.lastname}</h6>
                                 <p>
-                                    {deleteIcon}
+                                    <span>{dayjs(val.createdat).fromNow()}</span>
+                                    
+                                    <span>{val.jobrole}</span>
                                 </p>
                             </div>
+                            {user.userData && val.user_id === user.userData[0].id 
+                            &&
+                            <div className="del-edit">
+                                <Link to={`/posts?editId=${val.id}`}>
+                                    <p >
+                                        {editIcon}
+                                    </p>
+                                 </Link>
+                                <p>
+                                    <Popconfirm
+                                        title="Are you sure to delete this post?"
+                                        onConfirm={() => handlePostDelete(val.id)}
+                                        onCancel={handlecancel}
+                                        okText="Yes"
+                                        cancelText="No"
+                                    >
+                                        <a href="#">
+                                            <div style={{color: '#959595'}}>
+                                            {deleteIcon}
+                                            </div>
+                                        </a>
+                                    </Popconfirm>
+                                </p>
+                            </div>
+                            }
                         </div>
                     </div>
                     <div className="user-post">
                             <div className="post-section">
                                 
                                 <div className="post">
-                                    <p>Unresonsiveness</p>
-                                    <p>Consequatur rerum amet fuga expedita sunt et tempora saepe? Iusto nihil explicabo perferendis quos provident delectus ducimus necessitatibus reiciendis optio tempora unde earum doloremque commodi laudantium ad nulla vel odio?</p>
+                                    <p>{val.title}</p>
+                                    <p>{val.article}</p>
                                 </div>
                                 <div className="gif">
-                                    <img src={gif} alt="gif" />
+                                    <img src={val.gif ? val.gif : gif} alt="gif" />
                                 </div>
                                 <div className="post-comment">
-                                    <p onClick={handleOpenDrawer}>
-                                        {commentIcon}
-                                    </p>
+                                    <Link to={`/posts?commentId=${val.id}`}>
+                                        <p >
+                                            {commentIcon}
+                                        </p>
+                                    </Link>
                                 </div>
                             </div>
                             
-                        </div>
-                </div>
-                <div className="post-owners-div">
-                    <div className="flexed-post-container">
-                        <div className="img-placeholder">
-                            <img src={placeholder} alt="display pic"/>
-                        </div>
-                        <div className="flexed-name-div">
-                            <div className="name-time">
-                                <h6>Umeh Chiamaka</h6>
-                                <p>1 hour ago</p>
-                            </div>
-                            <div className="del-edit">
-                                <p onClick={handleShowEditModal}>
-                                    {editIcon}
-                                </p>
-                                <p>
-                                    {deleteIcon}
-                                </p>
-                            </div>
                         </div>
                     </div>
-                    <div className="user-post">
-                            <div className="post-section">
-                                
-                                <div className="post">
-                                    <p>Unresonsiveness</p>
-                                    <p>Consequatur rerum amet fuga expedita sunt et tempora saepe? Iusto nihil explicabo perferendis quos provident delectus ducimus necessitatibus reiciendis optio tempora unde earum doloremque commodi laudantium ad nulla vel odio?</p>
-                                </div>
-                                <div className="gif">
-                                    <img src={gif} alt="gif" />
-                                </div>
-                                <div className="post-comment">
-                                    <p onClick={handleOpenDrawer}>
-                                        {commentIcon}
-                                    </p>
-                                </div>
                             </div>
-                            
-                        </div>
-                </div>
+                        )
+                    })
+                :
+                <p>No Posts yet</p>    
+                }
+               
+                
                 </div>
             </section>
             <MakeAPost showPostModal={showPostModal} handleClosePostModal={handleHidePostModal}/>
-            <EditAPost showEditModal={showEditModal} handleCloseEditModal={handleHideEditModal}/>
-            <Comments open={openCommentsDrawer} handleClose={handleCloseDrawer}/>
+            <EditAPost postId={query.get('id')}/>
+            <Comments postId={query.get('id')}/>
+            {loading && <Loader speed="fast" center backdrop content="" />}
+
         </div>
     )
 }
 
-export default Posts
+const mapStateToProps = (state) => {
+    return {
+        posts: state.posts,
+        user: state.user,
+        getPostsSuccessTime: state.posts.getPostsSuccessTime
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getPosts: (entry) => dispatch(getPosts(entry)),
+        getUser: (entry) => dispatch(getUser(entry)),
+        deletePost: (postId) => dispatch(deletePost(postId))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import dayjs from 'dayjs';
+import { Link } from "react-router-dom";
+import { Loader } from 'rsuite';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faEdit, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import SignedInHeader from './headers/SignedInHeader';
@@ -11,19 +13,23 @@ import MakeAPost from './MakeAPost';
 import EditAPost from './EditAPost';
 import Comments from './Comments';
 import {getPosts} from '../store/actions/postsActions';
+import useQuerry from './helpers/useQuerry';
+import { getUser } from '../store/actions/userActions';
 
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
-function Posts({getPosts, posts}) {
+function Posts({getPosts, posts, getPostsSuccessTime, getUser, user}) {
     const commentIcon = <FontAwesomeIcon icon={faComment} />
     const editIcon = <FontAwesomeIcon icon={faEdit} />
     const deleteIcon = <FontAwesomeIcon icon={faTrash} />
     const WriteIcon = <FontAwesomeIcon icon={faPenSquare} />
 
+    let query = useQuerry();
+    const [loading, setLoading] = useState(true)
     const [showPostModal, setShowPostModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [openCommentsDrawer, setOpenCommentsDrawer] = useState(false);
+
 
     const handleShowPostModal = () => {
         setShowPostModal(true)
@@ -41,17 +47,20 @@ function Posts({getPosts, posts}) {
         setShowEditModal(false)
     }
 
-    const handleOpenDrawer = () => {
-        setOpenCommentsDrawer(true)
-    }
-
-    const handleCloseDrawer = () => {
-        setOpenCommentsDrawer(false)
-    }
-
     useEffect(() => {
         getPosts()
+        getUser()
     }, [])
+
+    useEffect(() => {
+        if(getPostsSuccessTime){
+            setLoading(false)
+        }
+    })
+
+    if(loading){
+        <Loader backdrop content="loading..." vertical />
+    }
 
     return (
         <div>
@@ -66,9 +75,9 @@ function Posts({getPosts, posts}) {
                     </p>
                     <p>Make a post</p>    
                 </div>
-                {posts && posts.length > 0 
+                {posts.postsData && posts.postsData.length > 0 
                 ?
-                    posts.map((val) => {
+                    posts.postsData.map((val) => {
                         return (
                             <div key={val.id}>
                                 <div className="post-owners-div">
@@ -85,6 +94,8 @@ function Posts({getPosts, posts}) {
                                     <span>{val.jobrole}</span>
                                 </p>
                             </div>
+                            {user.userData && val.user_id === user.userData[0].id 
+                            &&
                             <div className="del-edit">
                                 <p onClick={handleShowEditModal}>
                                     {editIcon}
@@ -93,6 +104,7 @@ function Posts({getPosts, posts}) {
                                     {deleteIcon}
                                 </p>
                             </div>
+                            }
                         </div>
                     </div>
                     <div className="user-post">
@@ -103,12 +115,14 @@ function Posts({getPosts, posts}) {
                                     <p>{val.article}</p>
                                 </div>
                                 <div className="gif">
-                                    <img src={val.git ? val.gif : gif} alt="gif" />
+                                    <img src={val.gif ? val.gif : gif} alt="gif" />
                                 </div>
                                 <div className="post-comment">
-                                    <p onClick={handleOpenDrawer}>
-                                        {commentIcon}
-                                    </p>
+                                    <Link to={`/posts?commentId=${val.id}`}>
+                                        <p >
+                                            {commentIcon}
+                                        </p>
+                                    </Link>
                                 </div>
                             </div>
                             
@@ -126,22 +140,25 @@ function Posts({getPosts, posts}) {
             </section>
             <MakeAPost showPostModal={showPostModal} handleClosePostModal={handleHidePostModal}/>
             <EditAPost showEditModal={showEditModal} handleCloseEditModal={handleHideEditModal}/>
-            <Comments open={openCommentsDrawer} handleClose={handleCloseDrawer}/>
+            <Comments postId={query.get('id')}/>
+            {loading && <Loader speed="fast" center backdrop content="" />}
+
         </div>
     )
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
-    console.log(state.posts.postsData);
     return {
-        posts: state.posts.postsData
+        posts: state.posts,
+        user: state.user,
+        getPostsSuccessTime: state.posts.getPostsSuccessTime
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getPosts: (entry) => dispatch(getPosts(entry))
+        getPosts: (entry) => dispatch(getPosts(entry)),
+        getUser: (entry) => dispatch(getUser(entry))
     }
 }
 

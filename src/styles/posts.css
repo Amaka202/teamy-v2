@@ -27,7 +27,7 @@
 }
 
 .post-owners-div{
-    margin-bottom: 2em;
+    margin-bottom: 1em;
     padding: 2em;
     background-color: white;
     border: 2px solid white;
@@ -67,18 +67,19 @@
 }
 
 .img-placeholder{
-    width: 20%;
+    width: 10%;
 }
 
 .flexed-name-div{
     display: flex;
     justify-content: space-between;
     align-content: space-between;
-    width: 80%;
+    width: 90%;
 }
 
 .img-placeholder img{
     width: 5em;
+    height: 4em;
 }
 
 .user-post{
@@ -121,13 +122,21 @@ p + p{
         width: 90%;
         padding: 1em;
     }
+    .img-placeholder{
+        width: 20%;
+    }
+    
+    .flexed-name-div{
+        width: 80%;
+
+    }
 
     .gif img{
         width: 15em;
     }
 
     .img-placeholder img{
-        width: 4em;
+        width: 3.5em;
     }
 
     .name-time{

@@ -1,11 +1,12 @@
 .comments-container{
     margin: auto;
-    width: 99%;
+    width: 90%;
 }
 
 .comments-wrapper{
     margin: auto;
-    width: 90%;
+    width: 80%;
+    margin-bottom: 5rem;
 }
 
 .make-a-comment{
@@ -20,7 +21,6 @@
     position: fixed;
     width: 80%;
     bottom: 1%;
-    padding: 0 10px;
     /* width: 90%; */
     height: 3.5em;
     border: 2px solid #4C506D;
@@ -30,6 +30,8 @@
 .comment-input input {
     width: 100%;
     height: 100%;
+    padding: 0 10px;
+
     border: none;
     border-radius: 10px;
 
@@ -46,3 +48,26 @@
 
 }
 
+.send-comment-icon button{
+    background-color: white;
+    /* height: 3.5em; */
+
+}
+
+.send-comment-icon button:active{
+    border: none;
+}
+
+@media only screen and (max-width: 700px){
+    .comments-container{
+        margin: auto;
+        width: 95%;
+    }
+    
+    .comments-wrapper{
+        margin: auto;
+        width: 90%;
+        margin-bottom: 2rem;
+    }
+
+}

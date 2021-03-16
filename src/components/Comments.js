@@ -28,18 +28,22 @@ const onSubmit = data => {
                 <Drawer.Body className="drawer-body">
                     <div className="comments-container">
                         <h5>Umeh Chiamaka's Post</h5>
+                        <div className="post-owners-div">
                     <div className="flexed-post-container">
                         <div className="img-placeholder">
                             <img src={placeholder} alt="display pic"/>
                         </div>
-                        <div className="user-post">
+                        <div className="flexed-name-div">
+                            <div className="name-time">
+                                <h6>Umeh Chiamaka</h6>
+                                <p>1 hour ago</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div className="user-post">
                             <div className="post-section">
-                                <div className="flexed-name-div">
-                                    <div className="name-time">
-                                        <h6>Umeh Chiamaka</h6>
-                                        <p>1 hour ago</p>
-                                    </div>
-                                </div>
+                                
                                 <div className="post">
                                     <p>Unresonsiveness</p>
                                     <p>Consequatur rerum amet fuga expedita sunt et tempora saepe? Iusto nihil explicabo perferendis quos provident delectus ducimus necessitatibus reiciendis optio tempora unde earum doloremque commodi laudantium ad nulla vel odio?</p>
@@ -50,7 +54,7 @@ const onSubmit = data => {
                             </div>
                             
                         </div>
-                    </div>
+                </div>
                     <Divider>Comments</Divider>
                     <div className="comments-wrapper">
                     <div className="flexed-post-container">

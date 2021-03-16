@@ -26,9 +26,7 @@
     cursor: pointer;
 }
 
-.flexed-post-container{
-    display: flex;
-    justify-content: center;
+.post-owners-div{
     margin-bottom: 2em;
     padding: 2em;
     background-color: white;
@@ -36,8 +34,14 @@
     border-radius: 10px;
 }
 
-.name-time{
+.flexed-post-container{
     display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.name-time{
+    /* display: flex; */
     margin-bottom: 1em;
     /* width: 50%; */
 }
@@ -45,7 +49,7 @@
 .name-time p:nth-child(2){
     color: #959595;
     font-size: 0.8em;
-    margin-left: 1em;
+    /* margin-left: 1em; */
 }
 
 .del-edit{
@@ -62,12 +66,18 @@
     width: 20%;
 }
 
+.flexed-name-div{
+    display: flex;
+    justify-content: space-between;
+    align-content: space-between;
+    width: 80%;
+}
+
 .img-placeholder img{
     width: 5em;
 }
 
 .user-post{
-    width: 80%;
 }
 
 .post p:first-child{
@@ -84,11 +94,7 @@
     width: 20em;
 }
 
-.flexed-name-div{
-    display: flex;
-    justify-content: space-between;
-    align-content: space-between;
-}
+
 
 .post-comment{
     margin-top: 1em;

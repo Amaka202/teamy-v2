@@ -6,7 +6,7 @@ import { Modal } from 'antd';
 function MakeAPost(props) {
     const { register, handleSubmit, errors } = useForm();
 
-    const {show, handleClose} = props;
+    const {showPostModal, handleClosePostModal} = props;
     const onSubmit = data => {
         console.log(data);
     };
@@ -14,12 +14,12 @@ function MakeAPost(props) {
     return (
         <div>
             <Modal
-          visible={show}
+          visible={showPostModal}
           title="Make a Post"
-          onOk={handleClose}
-          onCancel={handleClose}
+          onOk={handleClosePostModal}
+          onCancel={handleClosePostModal}
           footer={[
-            <p onClick={handleClose}>Cancel</p>           
+            <p onClick={handleClosePostModal}>Cancel</p>           
             ]}
             >
                 <div>

@@ -29,7 +29,7 @@ export const getPosts = () => {
     }
 }
 
-export const createEntry = (entryData) => {
+export const createPost = (postData) => {
     return (dispatch, getState) => {
         fetch(postsApiUrl, {
             method: 'POST',
@@ -38,60 +38,60 @@ export const createEntry = (entryData) => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${getToken()}`
             },
-            body: JSON.stringify(entryData)
+            body: JSON.stringify(postData)
         })
             .then((data) => data.json())
             .then((response) => {
                 dispatch({
-                    type: 'CREATE ENTRY SUCCESS',
-                    time: new Date(),
+                    type: 'CREATE POST SUCCESS',
+                    createPostSuccessTime: new Date(),
                     response
                 })
             })
             .catch((error) => {
                 dispatch({
-                    type: 'CREATE ENTRY ERROR',
-                    time: new Date(),
+                    type: 'CREATE POST ERROR',
+                    createPostsErrorTime: new Date(),
                     error
                 })
             })
     }
 }
 
-export const editEntry = (entryId, entryToUpdate) => {
-    const editEntryApiUrl = `https://radiant-dusk-52143.herokuapp.com/api/v1/entries/${entryId}/edit`
+export const editPost = (postId, postDataToUpdate) => {
+    const editPostAPiUrl = `https://teamy-api.herokuapp.com/api/v1/posts/${postId}`
     return (dispatch, getState) => {
-        fetch(editEntryApiUrl, {
-            method: 'PUT',
+        fetch(editPostAPiUrl, {
+            method: 'PATCH',
             mode: 'cors',
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${getToken()}`
             },
-            body: JSON.stringify(entryToUpdate)
+            body: JSON.stringify(postDataToUpdate)
         })
             .then((data) => data.json())
             .then((response) => {
                 dispatch({
-                    type: 'EDIT ENTRY SUCCESS',
-                    editTime: new Date(),
+                    type: 'EDIT POST SUCCESS',
+                    editPostSuccessTime: new Date(),
                     response
                 }) 
             })
             .catch((error) => {
                 dispatch({
-                    type: 'EDIT ENTRY ERROR',
-                    editTime: new Date(),
+                    type: 'EDIT POST ERROR',
+                    editPostErrorTime: new Date(),
                     error
                 })
             })
     }
 }
 
-export const deleteEntry = (entryId) => {
-    const deleteEntryApiUrl = `https://radiant-dusk-52143.herokuapp.com/api/v1/entries/${entryId}/delete`
+export const deletePost = (postId) => {
+    const deletePostAPiUrl = `https://teamy-api.herokuapp.com/api/v1/posts/${postId}`
     return (dispatch, getState) => {
-        fetch(deleteEntryApiUrl, {
+        fetch(deletePostAPiUrl, {
             method: 'DELETE',
             mode: 'cors',
             headers: {
@@ -102,15 +102,15 @@ export const deleteEntry = (entryId) => {
             .then((data) => data.json())
             .then((response) => {
                 dispatch({
-                    type: 'DELETE ENTRY SUCCESS',
-                    deleteTime: new Date(),
+                    type: 'DELETE POST SUCCESS',
+                    deletePostSuccessTime: new Date(),
                     response
                 })
             })
             .catch((error) => {
                 dispatch({
-                    type: 'DELETE ENTRY ERROR',
-                    deleteTime: new Date(),
+                    type: 'DELETE POST ERROR',
+                    deletePostErrorTime: new Date(),
                     error
                 })
             })

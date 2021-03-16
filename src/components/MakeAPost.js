@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Button, Divider } from 'rsuite';
 import { Modal } from 'antd';
+import {connect} from 'react-redux';
+import {createPost} from '../store/actions/postsActions';
+
 
 function MakeAPost(props) {
     const { register, handleSubmit, errors } = useForm();
-
-    const {showPostModal, handleClosePostModal} = props;
+    const [loading, setLoading] = useState(false);
+    const {showPostModal, handleClosePostModal, createPost, posts} = props;
     const onSubmit = data => {
-        console.log(data);
+        setLoading(true)
+        createPost(data)
     };
+
+    useEffect(() => {
+        if(posts.createPostSuccessTime){
+            setLoading(false)
+            handleClosePostModal()
+        }
+    }, [posts.createPostSuccessTime])
     
     return (
         <div>
@@ -38,20 +49,39 @@ function MakeAPost(props) {
                     {errors.title && <span>{errors.title.message}</span>}
                 </div>
                 <div className="form-field">
-                    <textarea name="post" placeholder="Post" ref={register}/>
+                    <textarea name="article" placeholder="Post" 
+                        ref={
+                            register({
+                              required: 'This field is required'
+                            })
+                          }
+                    />
+                    {errors.article && <span>{errors.article.message}</span>}
+
                 </div>
                 <Divider />
-                <div>
-                    <input ref={register} type="file" name="gif" />
-                </div>
                 <div className="auth-btn">
-                    <Button className="primary-btn" type="submit">POST</Button>
+                    <Button className="primary-btn" type="submit" loading={loading}>POST</Button>
                 </div>
             </form>
                 </div>
             </Modal>
+
         </div>
     )
 }
+ 
+const mapStateToProps = (state) => {
+    return {
+        posts: state.posts,
+        
+    }
+}
 
-export default MakeAPost
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createPost: (postData) => dispatch(createPost(postData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MakeAPost);

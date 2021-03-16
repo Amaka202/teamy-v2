@@ -5,61 +5,54 @@ const iniState = {}
 const postsReducer = (state = iniState, action) => {
     switch (action.type) {
         case 'GET POSTS':
-            console.log(' successful');  
-            return {
+            return { 
                 ...state,
                 postsData: action.response.data,
                 getPostsSuccessTime: action.getPostsSuccessTime
             } 
         case 'GET POSTS ERROR':
-            console.log('signup error');  
             return {
                 ...state,
                 getPostsErrorTime: action.getPostsErrorTime
              } 
          case 'CREATE POST SUCCESS':
-            console.log('login success');  
             return {
                 ...state,
-                entryCreated: action.response,
+                postCreated: action.response,
                 authStatus: 'success',
-                time: action.time
+                createPostSuccessTime: action.createPostSuccessTime
             }
         case 'CREATE POST ERROR':
-            console.log('login error');  
             return {
                 ...state,
                 postStatus: 'error',
-                time: action.time
+                createPostsErrorTime: action.createPostsErrorTime
 
              }
 
          case 'EDIT POST SUCCESS':
-            console.log('edit success'); 
             console.log(action.response); 
             return {
                 ...state,
                 editedData: action.response,
-                timeEdited: action.editTime,
+                editPostSuccessTime: action.editPostSuccessTime,
             }
         case 'EDIT POST ERROR':
-            console.log('edit error');  
             return {
                 ...state,
                 authStatus: 'error',
+                editPostErrorTime: action.editPostErrorTime
              }     
              
          case 'DELETE POST SUCCESS':
-            console.log('delete success');  
             return {
                 ...state,
-                timeEntryDeleted: action.deleteTime,
+                deletePostSuccessTime: action.deletePostSuccessTime,
             }
         case 'DELETE POST ERROR':
-            console.log('delete error');  
             return {
                 ...state,
-                authStatus: 'error',
+                deletePostErrorTime: action.deletePostErrorTime,
              } 
         default:
             return state;

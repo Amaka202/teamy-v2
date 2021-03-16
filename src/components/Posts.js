@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import dayjs from 'dayjs';
 import { Link } from "react-router-dom";
 import { Loader } from 'rsuite';
+import { Popconfirm } from 'antd';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faEdit, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import SignedInHeader from './headers/SignedInHeader';
@@ -12,14 +14,14 @@ import placeholder from '../img/placeholder.png';
 import MakeAPost from './MakeAPost';
 import EditAPost from './EditAPost';
 import Comments from './Comments';
-import {getPosts} from '../store/actions/postsActions';
+import {getPosts, deletePost} from '../store/actions/postsActions';
 import useQuerry from './helpers/useQuerry';
 import { getUser } from '../store/actions/userActions';
 
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
-function Posts({getPosts, posts, getPostsSuccessTime, getUser, user}) {
+function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost}) {
     const commentIcon = <FontAwesomeIcon icon={faComment} />
     const editIcon = <FontAwesomeIcon icon={faEdit} />
     const deleteIcon = <FontAwesomeIcon icon={faTrash} />
@@ -28,7 +30,6 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user}) {
     let query = useQuerry();
     const [loading, setLoading] = useState(true)
     const [showPostModal, setShowPostModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
 
 
     const handleShowPostModal = () => {
@@ -39,28 +40,24 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user}) {
         setShowPostModal(false)
     }
 
-    const handleShowEditModal = () => {
-        setShowEditModal(true)
+    const handlePostDelete = (postId) => {
+        deletePost(postId)
     }
 
-    const handleHideEditModal = () => {
-        setShowEditModal(false)
+    const handlecancel = () => { 
+        return;
     }
 
     useEffect(() => {
         getPosts()
         getUser()
-    }, [])
+    }, [posts.createPostSuccessTime, posts.editPostSuccessTime, posts.deletePostSuccessTime])
 
     useEffect(() => {
         if(getPostsSuccessTime){
             setLoading(false)
         }
-    })
-
-    if(loading){
-        <Loader backdrop content="loading..." vertical />
-    }
+    }, [getPostsSuccessTime])
 
     return (
         <div>
@@ -97,11 +94,25 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user}) {
                             {user.userData && val.user_id === user.userData[0].id 
                             &&
                             <div className="del-edit">
-                                <p onClick={handleShowEditModal}>
-                                    {editIcon}
-                                </p>
+                                <Link to={`/posts?editId=${val.id}`}>
+                                    <p >
+                                        {editIcon}
+                                    </p>
+                                 </Link>
                                 <p>
-                                    {deleteIcon}
+                                    <Popconfirm
+                                        title="Are you sure to delete this post?"
+                                        onConfirm={() => handlePostDelete(val.id)}
+                                        onCancel={handlecancel}
+                                        okText="Yes"
+                                        cancelText="No"
+                                    >
+                                        <a href="#">
+                                            <div style={{color: '#959595'}}>
+                                            {deleteIcon}
+                                            </div>
+                                        </a>
+                                    </Popconfirm>
                                 </p>
                             </div>
                             }
@@ -139,7 +150,7 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user}) {
                 </div>
             </section>
             <MakeAPost showPostModal={showPostModal} handleClosePostModal={handleHidePostModal}/>
-            <EditAPost showEditModal={showEditModal} handleCloseEditModal={handleHideEditModal}/>
+            <EditAPost postId={query.get('id')}/>
             <Comments postId={query.get('id')}/>
             {loading && <Loader speed="fast" center backdrop content="" />}
 
@@ -158,7 +169,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getPosts: (entry) => dispatch(getPosts(entry)),
-        getUser: (entry) => dispatch(getUser(entry))
+        getUser: (entry) => dispatch(getUser(entry)),
+        deletePost: (postId) => dispatch(deletePost(postId))
     }
 }
 

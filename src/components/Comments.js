@@ -29,7 +29,6 @@ const sendCommentIcon = <FontAwesomeIcon icon={faPaperPlane} />
 const onSubmit = data => {
     createComment(commentId, data)
     reset()
-    console.log(data);
 };
 
 let individualPost = posts.postsData && posts.postsData.filter(val => val.id === commentId)
@@ -173,7 +172,6 @@ const handleCloseDrawer = () => {
 
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         posts: state.posts,
         commentsData: state.comments,
@@ -186,5 +184,5 @@ const mapDispatchToProps = (dispatch) => {
         createComment: (postId, comment) => dispatch(createComment(postId, comment))
     }
 }
-
+ 
 export default connect(mapStateToProps, mapDispatchToProps)(Comments);

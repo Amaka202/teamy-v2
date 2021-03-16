@@ -2,20 +2,22 @@
 
 const iniState = {}
 
-const entriesReducer = (state = iniState, action) => {
+const postsReducer = (state = iniState, action) => {
     switch (action.type) {
-        case 'GET ENTRIES':
+        case 'GET POSTS':
             console.log(' successful');  
             return {
                 ...state,
-                entriesData: action.response.data,
-            }
-        case 'GET ENTRIES ERROR':
+                postsData: action.response.data,
+                getPostsSuccessTime: action.getPostsSuccessTime
+            } 
+        case 'GET POSTS ERROR':
             console.log('signup error');  
             return {
                 ...state,
+                getPostsErrorTime: action.getPostsErrorTime
              } 
-         case 'CREATE ENTRY SUCCESS':
+         case 'CREATE POST SUCCESS':
             console.log('login success');  
             return {
                 ...state,
@@ -23,7 +25,7 @@ const entriesReducer = (state = iniState, action) => {
                 authStatus: 'success',
                 time: action.time
             }
-        case 'CREATE ENTRY ERROR':
+        case 'CREATE POST ERROR':
             console.log('login error');  
             return {
                 ...state,
@@ -32,7 +34,7 @@ const entriesReducer = (state = iniState, action) => {
 
              }
 
-         case 'EDIT ENTRY SUCCESS':
+         case 'EDIT POST SUCCESS':
             console.log('edit success'); 
             console.log(action.response); 
             return {
@@ -40,20 +42,20 @@ const entriesReducer = (state = iniState, action) => {
                 editedData: action.response,
                 timeEdited: action.editTime,
             }
-        case 'EDIT ENTRY ERROR':
+        case 'EDIT POST ERROR':
             console.log('edit error');  
             return {
                 ...state,
                 authStatus: 'error',
              }     
              
-         case 'DELETE ENTRY SUCCESS':
+         case 'DELETE POST SUCCESS':
             console.log('delete success');  
             return {
                 ...state,
                 timeEntryDeleted: action.deleteTime,
             }
-        case 'DELETE ENTRY ERROR':
+        case 'DELETE POST ERROR':
             console.log('delete error');  
             return {
                 ...state,
@@ -64,4 +66,4 @@ const entriesReducer = (state = iniState, action) => {
     }
 }
 
-export default entriesReducer;
+export default postsReducer;

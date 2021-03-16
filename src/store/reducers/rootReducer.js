@@ -1,10 +1,10 @@
 import authReducer from './authReducer';
-import entriesReducer from './entriesReducer';
 import {combineReducers} from 'redux';
+import postsReducer from './postsReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    entry: entriesReducer
+    posts: postsReducer
 })
 
 export default rootReducer;

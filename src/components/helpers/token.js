@@ -1,5 +1,5 @@
 export const getToken = () => {
-    localStorage.getItem('teamyToken')
+    return localStorage.getItem('teamyToken')
 }
 
 export const saveToken = (token) => {

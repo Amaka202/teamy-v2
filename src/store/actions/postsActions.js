@@ -1,7 +1,7 @@
-import {getToken} from '../../components/helpers/getToken';
+import {getToken} from '../../components/helpers/token';
 const postsApiUrl = 'https://teamy-api.herokuapp.com/api/v1/posts'
 
-export const getEntries = () => {
+export const getPosts = () => {
     return (dispatch, getState) => {
         fetch(postsApiUrl, {
             method: 'GET',
@@ -14,15 +14,15 @@ export const getEntries = () => {
             .then((data) => data.json())
             .then((response) => {
                 dispatch({
-                    type: 'GET ENTRIES',
-                    time: new Date(),
+                    type: 'GET POSTS',
+                    getPostsSuccessTime: new Date(),
                     response
                 })
             })
             .catch((error) => {
                 dispatch({
-                    type: 'GET ENTRIES ERROR',
-                    time: new Date(),
+                    type: 'GET POSTS ERROR',
+                    getPostsErrorTime: new Date(),
                     error
                 })
             })
@@ -76,7 +76,7 @@ export const editEntry = (entryId, entryToUpdate) => {
                     type: 'EDIT ENTRY SUCCESS',
                     editTime: new Date(),
                     response
-                })
+                }) 
             })
             .catch((error) => {
                 dispatch({

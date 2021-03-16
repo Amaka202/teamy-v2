@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faEdit, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import SignedInHeader from './headers/SignedInHeader';
@@ -9,8 +10,12 @@ import placeholder from '../img/placeholder.png';
 import MakeAPost from './MakeAPost';
 import EditAPost from './EditAPost';
 import Comments from './Comments';
+import {getPosts} from '../store/actions/postsActions';
 
-function Posts() {
+var relativeTime = require('dayjs/plugin/relativeTime')
+dayjs.extend(relativeTime)
+
+function Posts({getPosts, posts}) {
     const commentIcon = <FontAwesomeIcon icon={faComment} />
     const editIcon = <FontAwesomeIcon icon={faEdit} />
     const deleteIcon = <FontAwesomeIcon icon={faTrash} />
@@ -44,6 +49,10 @@ function Posts() {
         setOpenCommentsDrawer(false)
     }
 
+    useEffect(() => {
+        getPosts()
+    }, [])
+
     return (
         <div>
             <header>
@@ -57,15 +66,24 @@ function Posts() {
                     </p>
                     <p>Make a post</p>    
                 </div>
-               <div className="post-owners-div">
-                    <div className="flexed-post-container">
+                {posts && posts.length > 0 
+                ?
+                    posts.map((val) => {
+                        return (
+                            <div key={val.id}>
+                                <div className="post-owners-div">
+                        <div className="flexed-post-container">
                         <div className="img-placeholder">
                             <img src={placeholder} alt="display pic"/>
                         </div>
                         <div className="flexed-name-div">
                             <div className="name-time">
-                                <h6>Umeh Chiamaka</h6>
-                                <p>1 hour ago</p>
+                                <h6>{val.firstname + " " + val.lastname}</h6>
+                                <p>
+                                    <span>{dayjs(val.createdat).fromNow()}</span>
+                                    
+                                    <span>{val.jobrole}</span>
+                                </p>
                             </div>
                             <div className="del-edit">
                                 <p onClick={handleShowEditModal}>
@@ -81,11 +99,11 @@ function Posts() {
                             <div className="post-section">
                                 
                                 <div className="post">
-                                    <p>Unresonsiveness</p>
-                                    <p>Consequatur rerum amet fuga expedita sunt et tempora saepe? Iusto nihil explicabo perferendis quos provident delectus ducimus necessitatibus reiciendis optio tempora unde earum doloremque commodi laudantium ad nulla vel odio?</p>
+                                    <p>{val.title}</p>
+                                    <p>{val.article}</p>
                                 </div>
                                 <div className="gif">
-                                    <img src={gif} alt="gif" />
+                                    <img src={val.git ? val.gif : gif} alt="gif" />
                                 </div>
                                 <div className="post-comment">
                                     <p onClick={handleOpenDrawer}>
@@ -94,47 +112,16 @@ function Posts() {
                                 </div>
                             </div>
                             
-                        </div>
-                </div>
-                <div className="post-owners-div">
-                    <div className="flexed-post-container">
-                        <div className="img-placeholder">
-                            <img src={placeholder} alt="display pic"/>
-                        </div>
-                        <div className="flexed-name-div">
-                            <div className="name-time">
-                                <h6>Umeh Chiamaka</h6>
-                                <p>1 hour ago</p>
-                            </div>
-                            <div className="del-edit">
-                                <p onClick={handleShowEditModal}>
-                                    {editIcon}
-                                </p>
-                                <p>
-                                    {deleteIcon}
-                                </p>
-                            </div>
                         </div>
                     </div>
-                    <div className="user-post">
-                            <div className="post-section">
-                                
-                                <div className="post">
-                                    <p>Unresonsiveness</p>
-                                    <p>Consequatur rerum amet fuga expedita sunt et tempora saepe? Iusto nihil explicabo perferendis quos provident delectus ducimus necessitatibus reiciendis optio tempora unde earum doloremque commodi laudantium ad nulla vel odio?</p>
-                                </div>
-                                <div className="gif">
-                                    <img src={gif} alt="gif" />
-                                </div>
-                                <div className="post-comment">
-                                    <p onClick={handleOpenDrawer}>
-                                        {commentIcon}
-                                    </p>
-                                </div>
                             </div>
-                            
-                        </div>
-                </div>
+                        )
+                    })
+                :
+                <p>No Posts yet</p>    
+                }
+               
+                
                 </div>
             </section>
             <MakeAPost showPostModal={showPostModal} handleClosePostModal={handleHidePostModal}/>
@@ -145,14 +132,16 @@ function Posts() {
 }
 
 const mapStateToProps = (state) => {
+    console.log(state);
+    console.log(state.posts.postsData);
     return {
-        entries: state.entry.enteries
+        posts: state.posts.postsData
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        // createEntry: (entry) => dispatch(createEntry(entry))
+        getPosts: (entry) => dispatch(getPosts(entry))
     }
 }
 

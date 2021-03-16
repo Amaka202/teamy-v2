@@ -46,10 +46,14 @@
     /* width: 50%; */
 }
 
-.name-time p:nth-child(2){
-    color: #959595;
-    font-size: 0.8em;
-    /* margin-left: 1em; */
+.name-time span{
+    font-size: 0.9em;
+    margin-right: 1em;
+}
+
+.name-time span:nth-child(2){
+    color: #4EA9BE;
+    font-size: 1.1em;
 }
 
 .del-edit{

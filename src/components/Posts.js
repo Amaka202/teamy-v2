@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComment, faEdit, faPenSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
 import SignedInHeader from './headers/SignedInHeader';
+import {connect} from 'react-redux';
 import '../styles/posts.css';
 import gif from '../img/gif.gif';
 import placeholder from '../img/placeholder.png';
@@ -143,4 +144,16 @@ function Posts() {
     )
 }
 
-export default Posts
+const mapStateToProps = (state) => {
+    return {
+        entries: state.entry.enteries
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        // createEntry: (entry) => dispatch(createEntry(entry))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);

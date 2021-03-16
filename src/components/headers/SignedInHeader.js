@@ -1,14 +1,18 @@
 import React from 'react';
+import {connect} from 'react-redux'
 import logo from '../../img/Logo.png';
 import {Link, useHistory} from 'react-router-dom';
 import { Button } from 'rsuite';
 import '../../styles/headers.css';
-
-function SignedInHeader() {
+import {resetAuthState} from '../../store/actions/resetStateAction';
+import {deleteToken} from '../helpers/token';
+function SignedInHeader({resetAuthState}) {
 
     const history = useHistory();
 
     const redirectToLogin = () => {
+        resetAuthState();
+        deleteToken();
         history.push('/login')
     }
 
@@ -26,4 +30,11 @@ function SignedInHeader() {
     )
 }
 
-export default SignedInHeader;
+const mapDispatchToProps = (dispatch) => {
+    return {
+        resetAuthState: () => dispatch(resetAuthState())
+    }
+  }
+  
+  export default connect(null, mapDispatchToProps)(SignedInHeader);
+  

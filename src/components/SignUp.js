@@ -1,19 +1,40 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useForm } from "react-hook-form";
-import { Button } from 'rsuite';
+import { Button, Loader, Alert } from 'rsuite';
 import {Link, useHistory} from 'react-router-dom';
-
+import {connect} from 'react-redux'
 import SignUpHeader from './headers/SignUpHeader';
+import {createUser} from '../store/actions/authActions';
+import {resetAuthState} from '../store/actions/resetStateAction';
+import {saveToken} from './helpers/token';
 import '../styles/signup.css';
 
-function SignUp() {
-    const { register, handleSubmit, watch, errors } = useForm();
-    
+function SignUp({createUser, signUpSuccessTime, signUpErrorTime, fetcheddata, resetAuthState}) {
+    const { register, handleSubmit, errors } = useForm();
+    const [loading, setLoading] = useState(false);
+    const history = useHistory();
+
     const onSubmit = data => {
-        console.log(data);
+      createUser(data)
+      setLoading(true)
     };
-    // firstname, lastname, username, profile_img, email, password, gender, jobrole, location
-    console.log(errors);
+
+    useEffect(() => {
+      if(signUpSuccessTime || signUpErrorTime){
+        setLoading(false)
+        if(fetcheddata.status === 'error'){
+          Alert.error(fetcheddata.message, 5000)
+          resetAuthState();
+        }
+        if(fetcheddata.status === 'success'){
+          saveToken(fetcheddata.token)
+          history.push('/posts')
+        }
+      }
+    }, [signUpSuccessTime, signUpErrorTime])
+
+
+
     return (
         <div>
             <header>
@@ -72,7 +93,7 @@ function SignUp() {
                     {errors.email && <span>{errors.email.message}</span>}
                 </div>
                 <div className="form-field">
-                    <input name="password" placeholder="Password" 
+                    <input name="password" placeholder="Password" type='password'
                         ref={
                             register({
                               required: 'This field is required',
@@ -93,7 +114,7 @@ function SignUp() {
                         })
                       }
                 >
-                    <option value="" selected disabled >Gender</option>
+                    <option value="gender" selected disabled >Gender</option>
                     <option value="female">female</option>
                     <option value="male">male</option>
                     <option value="other">other</option>
@@ -108,7 +129,7 @@ function SignUp() {
                             })
                           }
                     >
-                        <option value="" selected disabled >Job Role</option>
+                        <option value="jobrole" selected disabled >Job Role</option>
                         <option value="frontend">Frontend</option>
                         <option value="backend">Backend</option>
                         <option value="design">Design</option>
@@ -119,7 +140,7 @@ function SignUp() {
                     {errors.jobrole && <span>{errors.jobrole.message}</span>}
                 </div>
                 <div className="form-field">
-                    <input name="location" placeholder="San Franciso" 
+                    <input name="location" placeholder="Location" 
                         ref={
                             register({
                               required: 'This field is required' // JS only: <p>error message</p> TS only support string
@@ -130,7 +151,8 @@ function SignUp() {
                 </div>
                 <div className="auth-btn">
 
-                <Button className="primary-btn" type="submit">SIGN UP</Button>
+                <Button className="primary-btn" type="submit">SIGN UP</Button> 
+                {loading && <Loader speed="fast" center backdrop content="" />}
                     <p>
                         Already have an account? 
                         <Link to="/login" style={{color: '#4C506D', textDecoration: '', marginLeft: '0.5rem'}}>LOGIN</Link>
@@ -143,4 +165,22 @@ function SignUp() {
     )
 }
 
-export default SignUp;
+
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+      signUpSuccessTime: state.auth.signUpSuccessTime,
+      signUpErrorTime: state.auth.signUpErrorTime,
+      fetcheddata: state.auth.data
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      createUser: (userData) => dispatch(createUser(userData)),
+      resetAuthState: () => dispatch(resetAuthState())
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

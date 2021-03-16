@@ -6,7 +6,7 @@ import { Modal } from 'antd';
 function EditAPost(props) {
     const { register, handleSubmit, errors } = useForm();
 
-    const {show, handleClose} = props;
+    const {showEditModal, handleCloseEditModal} = props;
     const onSubmit = data => {
         console.log(data);
     };
@@ -14,12 +14,12 @@ function EditAPost(props) {
     return (
         <div>
             <Modal
-          visible={show}
+          visible={showEditModal}
           title="Edit a Post"
-          onOk={handleClose}
-          onCancel={handleClose}
+          onOk={handleCloseEditModal}
+          onCancel={handleCloseEditModal}
           footer={[
-            <p onClick={handleClose}>Cancel</p>           
+            <p onClick={handleCloseEditModal}>Cancel</p>           
             ]}
             >
                 <div>

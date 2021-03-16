@@ -15,15 +15,24 @@ function Posts() {
     const deleteIcon = <FontAwesomeIcon icon={faTrash} />
     const WriteIcon = <FontAwesomeIcon icon={faPenSquare} />
 
-    const [showModal, setShowModal] = useState(false);
+    const [showPostModal, setShowPostModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
     const [openCommentsDrawer, setOpenCommentsDrawer] = useState(false);
 
-    const handleShowModal = () => {
-        setShowModal(true)
+    const handleShowPostModal = () => {
+        setShowPostModal(true)
     }
 
-    const handleHideModal = () => {
-        setShowModal(false)
+    const handleHidePostModal = () => {
+        setShowPostModal(false)
+    }
+
+    const handleShowEditModal = () => {
+        setShowEditModal(true)
+    }
+
+    const handleHideEditModal = () => {
+        setShowEditModal(false)
     }
 
     const handleOpenDrawer = () => {
@@ -42,7 +51,7 @@ function Posts() {
             <section className="posts-container">
               <div className="posts-wrapper">
                 <div className="make-post">
-                    <p className="icon" onClick={handleShowModal}>
+                    <p className="icon" onClick={handleShowPostModal}>
                         {WriteIcon}
                     </p>
                     <p>Make a post</p>    
@@ -52,22 +61,24 @@ function Posts() {
                         <div className="img-placeholder">
                             <img src={placeholder} alt="display pic"/>
                         </div>
-                        <div className="user-post">
+                        <div className="flexed-name-div">
+                            <div className="name-time">
+                                <h6>Umeh Chiamaka</h6>
+                                <p>1 hour ago</p>
+                            </div>
+                            <div className="del-edit">
+                                <p onClick={handleShowEditModal}>
+                                    {editIcon}
+                                </p>
+                                <p>
+                                    {deleteIcon}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="user-post">
                             <div className="post-section">
-                                <div className="flexed-name-div">
-                                    <div className="name-time">
-                                        <h6>Umeh Chiamaka</h6>
-                                        <p>1 hour ago</p>
-                                    </div>
-                                    <div className="del-edit">
-                                        <p onClick={showModal}>
-                                            {editIcon}
-                                        </p>
-                                        <p>
-                                            {deleteIcon}
-                                        </p>
-                                    </div>
-                                </div>
+                                
                                 <div className="post">
                                     <p>Unresonsiveness</p>
                                     <p>Consequatur rerum amet fuga expedita sunt et tempora saepe? Iusto nihil explicabo perferendis quos provident delectus ducimus necessitatibus reiciendis optio tempora unde earum doloremque commodi laudantium ad nulla vel odio?</p>
@@ -83,21 +94,30 @@ function Posts() {
                             </div>
                             
                         </div>
-                    </div>
                 </div>
-                <div className="non-post-div">
+                <div className="post-owners-div">
                     <div className="flexed-post-container">
                         <div className="img-placeholder">
                             <img src={placeholder} alt="display pic"/>
                         </div>
-                        <div className="user-post">
+                        <div className="flexed-name-div">
+                            <div className="name-time">
+                                <h6>Umeh Chiamaka</h6>
+                                <p>1 hour ago</p>
+                            </div>
+                            <div className="del-edit">
+                                <p onClick={handleShowEditModal}>
+                                    {editIcon}
+                                </p>
+                                <p>
+                                    {deleteIcon}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="user-post">
                             <div className="post-section">
-                                <div className="flexed-name-div">
-                                    <div className="name-time">
-                                        <h6>Umeh Chiamaka</h6>
-                                        <p>1 hour ago</p>
-                                    </div>
-                                </div>
+                                
                                 <div className="post">
                                     <p>Unresonsiveness</p>
                                     <p>Consequatur rerum amet fuga expedita sunt et tempora saepe? Iusto nihil explicabo perferendis quos provident delectus ducimus necessitatibus reiciendis optio tempora unde earum doloremque commodi laudantium ad nulla vel odio?</p>
@@ -106,19 +126,18 @@ function Posts() {
                                     <img src={gif} alt="gif" />
                                 </div>
                                 <div className="post-comment">
-                                    <p>
-                                    {commentIcon}
+                                    <p onClick={handleOpenDrawer}>
+                                        {commentIcon}
                                     </p>
                                 </div>
                             </div>
                             
                         </div>
-                    </div>
                 </div>
-               </div>
+                </div>
             </section>
-            <MakeAPost show={showModal} handleClose={handleHideModal}/>
-            <EditAPost show={showModal} handleClose={handleHideModal}/>
+            <MakeAPost showPostModal={showPostModal} handleClosePostModal={handleHidePostModal}/>
+            <EditAPost showEditModal={showEditModal} handleCloseEditModal={handleHideEditModal}/>
             <Comments open={openCommentsDrawer} handleClose={handleCloseDrawer}/>
         </div>
     )

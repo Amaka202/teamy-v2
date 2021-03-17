@@ -18,7 +18,6 @@ function Login({loginSuccessTime, loginErrorTime, logindata, loginUser}) {
     const onSubmit = data => {
         setLoading(true)
         loginUser(data)
-        console.log(data);
     };
     useEffect(() => {
         if(loginSuccessTime || loginErrorTime){
@@ -92,7 +91,6 @@ function Login({loginSuccessTime, loginErrorTime, logindata, loginUser}) {
 }
 
 const mapStateToProps = (state) => {
-    console.log(state);
     return {
         loginSuccessTime: state.auth.loginSuccessTime,
         loginErrorTime: state.auth.loginErrorTime,

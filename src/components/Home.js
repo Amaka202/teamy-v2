@@ -4,6 +4,7 @@ import { Button } from 'rsuite';
 import HomeHeader from './headers/HomeHeader';
 import heroImage from '../img/image 2.png'
 import '../styles/home.css';
+import MyFooter from './MyFooter';
 
 function Home() {
 
@@ -32,6 +33,9 @@ function Home() {
                     <img src={heroImage} alt="hero"/>
                 </div>
             </section>
+            <footer>
+                <MyFooter />
+            </footer>
         </div>
     )
 }

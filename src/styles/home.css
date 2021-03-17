@@ -41,6 +41,7 @@
         flex-direction: column-reverse;
         justify-content: center;
         align-content: center;
+        /* margin-bottom: 10rem; */
     }
 
     .hero-img{

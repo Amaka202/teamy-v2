@@ -1,6 +1,7 @@
 .posts-container{
     background-color: #4EA9BE;
     /* height: 100vh; */
+    padding-bottom: 3rem;
 }
 
 
@@ -99,6 +100,19 @@
     width: 20em;
 }
 
+.post span{
+    font-size: 0.7em;
+    font-style: italic;
+    font-weight: 100;
+
+}
+
+.rs-badge-independent, .rs-badge-content{
+    background-color: #68E1FD;
+    font-size: 0.6em;
+    border-radius: 50%;
+}
+
 
 
 .post-comment{
@@ -117,6 +131,11 @@ p + p{
 }
 
 @media only screen and (max-width: 700px){
+    .posts-container{
+        background-color: #4EA9BE;
+        /* height: 100vh; */
+        padding-bottom: 1rem;
+    }
     .posts-wrapper{
         margin: auto;
         width: 90%;

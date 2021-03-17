@@ -22,9 +22,9 @@ function Home() {
             <section className="hero-section">
                 <div className="hero-writeup">
                     <h3>Team Management software</h3>
-                    <p>Commnuicate easily with teammates</p>
+                    <p>Communicate easily with teammates</p>
                     <p>Privately, securely</p>
-                    <p>bhbbw niwduwd niwduwhd niuwhduw</p>
+                    <p>Be up-to-date with what is happening</p>
                     <div className="home-btn">
                         <Button className="primary-btn" onClick={redirectToSignUp}>GET STARTED</Button>
                     </div>

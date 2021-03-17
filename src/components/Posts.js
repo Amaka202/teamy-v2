@@ -178,7 +178,7 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost,
             <EditAPost postId={query.get('id')}/>
             <Comments postId={query.get('id')}/>
             {loading && <Loader speed="fast" center backdrop content="" />}
-                <MyFooter />
+            <MyFooter />
         </div>
     )
 }

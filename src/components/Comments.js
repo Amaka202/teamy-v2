@@ -84,7 +84,8 @@ const handleCloseDrawer = () => {
                         <div className="post-owners-div">
                     <div className="flexed-post-container">
                         <div className="img-placeholder">
-                        <InitialsAvatar letter={individualPost && individualPost.firstname + " " + individualPost.lastname} rounded={true} />
+                            {individualPost &&
+                                <InitialsAvatar letter={`${individualPost.firstname} ${individualPost.lastname}`} rounded={true} />}
                             {/* <img src={placeholder} alt="display pic"/> */}
                         </div>
                         <div className="flexed-name-div">
@@ -119,7 +120,7 @@ const handleCloseDrawer = () => {
                     <div className="flexed-post-container">
                         <div className="img-placeholder">
                          {commentsData.commentsData && 
-                        <InitialsAvatar letter={comment.firstname + " " + comment.lastname} rounded={true} />}   
+                        <InitialsAvatar letter={`${comment.firstname} ${comment.lastname}`} rounded={true} />}   
                         </div>
                         <div className="flexed-name-div">
                             <div className="name-time">

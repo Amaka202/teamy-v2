@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import dayjs from 'dayjs';
 import { Link } from "react-router-dom";
-import { Loader } from 'rsuite';
+import { Alert, Loader, Badge } from 'rsuite';
 import { Popconfirm } from 'antd';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -10,19 +10,22 @@ import SignedInHeader from './headers/SignedInHeader';
 import {connect} from 'react-redux';
 import '../styles/posts.css';
 import gif from '../img/gif.gif';
-import placeholder from '../img/placeholder.png';
 import MakeAPost from './MakeAPost';
 import EditAPost from './EditAPost';
 import Comments from './Comments';
+
 import {getPosts, deletePost} from '../store/actions/postsActions';
+import {getComments} from '../store/actions/commentsActions';
+
 import useQuerry from './helpers/useQuerry';
 import { getUser } from '../store/actions/userActions';
 import { InitialsAvatar } from './InitialsAvatar';
+import MyFooter from './MyFooter';
 
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
-function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost}) {
+function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost, getComments, getPostsErrorTime, commentsData}) {
     const commentIcon = <FontAwesomeIcon icon={faComment} />
     const editIcon = <FontAwesomeIcon icon={faEdit} />
     const deleteIcon = <FontAwesomeIcon icon={faTrash} />
@@ -49,16 +52,27 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost}
         return;
     }
 
+    const commentsLength = (id) => {
+        getComments(id)
+    }
+
     useEffect(() => {
         getPosts()
         getUser()
-    }, [posts.createPostSuccessTime, posts.editPostSuccessTime, posts.deletePostSuccessTime])
+    }, [posts.createPostSuccessTime, posts.editPostSuccessTime, posts.deletePostSuccessTime, commentsData.postCommentsSuccessTime])
 
     useEffect(() => {
-        if(getPostsSuccessTime){
+        if(getPostsSuccessTime || getPostsErrorTime){
             setLoading(false)
         }
-    }, [getPostsSuccessTime])
+    }, [getPostsSuccessTime, getPostsErrorTime])
+
+    useEffect(() => {
+        if(getPostsErrorTime){
+            setLoading(false)
+            Alert.error('Server error', 5000)
+        }
+    }, [ getPostsErrorTime])
 
     return (
         <div>
@@ -124,17 +138,26 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost}
                             <div className="post-section">
                                 
                                 <div className="post">
-                                    <p>{val.title}</p>
-                                    <p>{val.article}</p>
+                                    <p>{val.title}
+                                    </p>
+                                    <p>{val.article}
+                                    <span> {val.isedited && "edited"}</span>
+                                    
+                                    </p>
+                                    
                                 </div>
                                 <div className="gif">
                                     {/* <img src={val.gif ? val.gif : gif} alt="gif" /> */}
                                 </div>
                                 <div className="post-comment">
                                     <Link to={`/posts?commentId=${val.id}`}>
-                                        <p >
-                                            {commentIcon}
-                                        </p>
+                                        <Badge content={val.comment_count}>
+                                            
+                                            <p > 
+                                                {commentIcon}
+                                            </p>
+
+                                        </Badge>
                                     </Link>
                                 </div>
                             </div>
@@ -155,16 +178,20 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost}
             <EditAPost postId={query.get('id')}/>
             <Comments postId={query.get('id')}/>
             {loading && <Loader speed="fast" center backdrop content="" />}
-
+                <MyFooter />
         </div>
     )
 }
 
 const mapStateToProps = (state) => {
+    console.log(state.posts);
     return {
         posts: state.posts,
         user: state.user,
-        getPostsSuccessTime: state.posts.getPostsSuccessTime
+        getPostsSuccessTime: state.posts.getPostsSuccessTime,
+        getPostsErrorTime: state.posts.getPostsErrorTime,
+        commentsData: state.comments,
+
     }
 }
 
@@ -172,6 +199,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getPosts: () => dispatch(getPosts()),
         getUser: () => dispatch(getUser()),
+        getComments: (postId) => dispatch(getComments(postId)),
         deletePost: (postId) => dispatch(deletePost(postId))
     }
 }

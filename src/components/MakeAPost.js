@@ -7,12 +7,13 @@ import {createPost} from '../store/actions/postsActions';
 
 
 function MakeAPost(props) {
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors, reset } = useForm();
     const [loading, setLoading] = useState(false);
     const {showPostModal, handleClosePostModal, createPost, posts} = props;
     const onSubmit = data => {
         setLoading(true)
         createPost(data)
+        reset()
     };
 
     useEffect(() => {

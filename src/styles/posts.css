@@ -99,6 +99,19 @@
     width: 20em;
 }
 
+.post span{
+    font-size: 0.7em;
+    font-style: italic;
+    font-weight: 100;
+
+}
+
+.rs-badge-independent, .rs-badge-content{
+    background-color: #68E1FD;
+    font-size: 0.6em;
+    border-radius: 50%;
+}
+
 
 
 .post-comment{

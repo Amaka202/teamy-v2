@@ -167,7 +167,6 @@ function SignUp({createUser, signUpSuccessTime, signUpErrorTime, fetcheddata, re
 
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
       signUpSuccessTime: state.auth.signUpSuccessTime,
       signUpErrorTime: state.auth.signUpErrorTime,

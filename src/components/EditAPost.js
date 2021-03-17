@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import {editPost} from '../store/actions/postsActions';
 import useQuerry from './helpers/useQuerry';
 
-function EditAPost(props) {
+function EditAPost(props) { 
     const { register, handleSubmit, errors, reset } = useForm();
     let query = useQuerry();
     const history = useHistory()

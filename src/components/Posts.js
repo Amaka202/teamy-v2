@@ -17,6 +17,7 @@ import Comments from './Comments';
 import {getPosts, deletePost} from '../store/actions/postsActions';
 import useQuerry from './helpers/useQuerry';
 import { getUser } from '../store/actions/userActions';
+import { InitialsAvatar } from './InitialsAvatar';
 
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
@@ -80,7 +81,8 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost}
                                 <div className="post-owners-div">
                         <div className="flexed-post-container">
                         <div className="img-placeholder">
-                            <img src={placeholder} alt="display pic"/>
+                        <InitialsAvatar letter={val.firstname + " " + val.lastname} rounded={true} />
+                            {/* <img src={placeholder} alt="display pic"/> */}
                         </div>
                         <div className="flexed-name-div">
                             <div className="name-time">
@@ -126,7 +128,7 @@ function Posts({getPosts, posts, getPostsSuccessTime, getUser, user, deletePost}
                                     <p>{val.article}</p>
                                 </div>
                                 <div className="gif">
-                                    <img src={val.gif ? val.gif : gif} alt="gif" />
+                                    {/* <img src={val.gif ? val.gif : gif} alt="gif" /> */}
                                 </div>
                                 <div className="post-comment">
                                     <Link to={`/posts?commentId=${val.id}`}>
@@ -168,8 +170,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getPosts: (entry) => dispatch(getPosts(entry)),
-        getUser: (entry) => dispatch(getUser(entry)),
+        getPosts: () => dispatch(getPosts()),
+        getUser: () => dispatch(getUser()),
         deletePost: (postId) => dispatch(deletePost(postId))
     }
 }

@@ -12,11 +12,13 @@ import gif from '../img/gif.gif';
 import placeholder from '../img/placeholder.png';
 import '../styles/comments.css';
 import useQuerry from './helpers/useQuerry';
+import { InitialsAvatar } from './InitialsAvatar';
 
 var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
 function Comments({ getComments, commentsData, posts, createComment}) { 
+
 const { register, handleSubmit, errors, reset } = useForm();
 const [openCommentsDrawer, setOpenCommentsDrawer] = useState(false);
 const [loading, setLoading] = useState(true);
@@ -33,6 +35,7 @@ const onSubmit = data => {
 
 let individualPost = posts.postsData && posts.postsData.filter(val => val.id === commentId)
 individualPost = posts.postsData && individualPost[0];
+
 const handleOpenDrawer = () => {
     setOpenCommentsDrawer(true)
 }
@@ -81,7 +84,8 @@ const handleCloseDrawer = () => {
                         <div className="post-owners-div">
                     <div className="flexed-post-container">
                         <div className="img-placeholder">
-                            <img src={placeholder} alt="display pic"/>
+                        <InitialsAvatar letter={individualPost && individualPost.firstname + " " + individualPost.lastname} rounded={true} />
+                            {/* <img src={placeholder} alt="display pic"/> */}
                         </div>
                         <div className="flexed-name-div">
                             <div className="name-time">
@@ -114,7 +118,8 @@ const handleCloseDrawer = () => {
                             <div className="post-owners-div">
                     <div className="flexed-post-container">
                         <div className="img-placeholder">
-                            <img src={placeholder} alt="display pic"/>
+                         {commentsData.commentsData && 
+                        <InitialsAvatar letter={comment.firstname + " " + comment.lastname} rounded={true} />}   
                         </div>
                         <div className="flexed-name-div">
                             <div className="name-time">

@@ -4,6 +4,7 @@
     display: flex;
     justify-content: space-around;
     align-content: space-around;
+    min-height: 80vh;
 }
 
 .hero-img{
@@ -41,7 +42,6 @@
         flex-direction: column-reverse;
         justify-content: center;
         align-content: center;
-        /* margin-bottom: 10rem; */
     }
 
     .hero-img{
